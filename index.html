@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bomberman Online - Multiplayer Game</title>
+    <title>Bomberman - Single Player Campaign</title>
     <style>
         * {
             margin: 0;
@@ -35,213 +35,146 @@
 
         #menu {
             text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 50px;
             border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 40px rgba(255, 100, 0, 0.5);
         }
 
         h1 {
-            font-size: 48px;
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px #00ffff;
+            font-size: 56px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px #ff6600;
             animation: glow 2s ease-in-out infinite;
         }
 
         @keyframes glow {
-            0%, 100% { text-shadow: 0 0 20px #00ffff; }
-            50% { text-shadow: 0 0 40px #00ffff, 0 0 60px #00ffff; }
+            0%, 100% { text-shadow: 0 0 20px #ff6600; }
+            50% { text-shadow: 0 0 50px #ff6600, 0 0 80px #ff6600; }
         }
 
-        .input-group {
-            margin: 20px 0;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        input, select {
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #00ffff;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            width: 300px;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            box-shadow: 0 0 15px #00ffff;
-        }
-
-        .skin-selector {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .skin-option {
-            width: 60px;
-            height: 60px;
-            border: 3px solid transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
-
-        .skin-option:hover {
-            transform: scale(1.1);
-            border-color: #00ffff;
-        }
-
-        .skin-option.selected {
-            border-color: #00ff00;
-            box-shadow: 0 0 20px #00ff00;
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 40px;
+            color: #ffaa00;
         }
 
         button {
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: 18px 50px;
+            font-size: 20px;
             font-weight: bold;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            margin: 10px;
+            margin: 15px;
             transition: all 0.3s;
             text-transform: uppercase;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00ffff 0%, #00aaff 100%);
-            color: #000;
+            background: linear-gradient(135deg, #ff6600 0%, #ff3300 100%);
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(255, 100, 0, 0.4);
         }
 
         .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #00ffff;
+            transform: scale(1.08);
+            box-shadow: 0 8px 30px rgba(255, 100, 0, 0.6);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #ff00ff 0%, #aa00ff 100%);
+            background: linear-gradient(135deg, #666 0%, #444 100%);
             color: #fff;
         }
 
         .btn-secondary:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px #ff00ff;
-        }
-
-        #lobby {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 20px;
-            min-width: 500px;
-        }
-
-        .player-list {
-            margin: 20px 0;
-            min-height: 150px;
-        }
-
-        .player-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .player-avatar {
-            font-size: 32px;
         }
 
         #gameContainer {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #gameCanvas {
-            border: 4px solid #00ffff;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            border: 4px solid #ff6600;
+            box-shadow: 0 0 30px rgba(255, 100, 0, 0.5);
             background: #1a1a1a;
         }
 
-        #gameUI {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
+        #gameHUD {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 30px;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #00ffff;
-        }
-
-        .player-hud {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-
-        .player-hud .avatar {
-            font-size: 24px;
-        }
-
-        .player-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            font-size: 12px;
-        }
-
-        .stat-bar {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        #gameOver {
-            text-align: center;
-        }
-
-        .leaderboard {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
-            min-width: 500px;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-bottom: 3px solid #ff6600;
             font-size: 18px;
         }
 
-        .leaderboard-item.winner {
-            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-            color: #000;
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hud-label {
+            color: #ffaa00;
             font-weight: bold;
-            box-shadow: 0 0 20px #ffd700;
+        }
+
+        .hud-value {
+            color: #fff;
+            font-size: 22px;
+        }
+
+        .lives {
+            color: #ff3333;
+        }
+
+        .level {
+            color: #00ff88;
+        }
+
+        .score {
+            color: #ffdd00;
+        }
+
+        #levelComplete, #gameOverScreen {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 60px;
+            border-radius: 20px;
+            max-width: 600px;
+        }
+
+        .level-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #00ff88;
+        }
+
+        .game-over-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ff3333;
+        }
+
+        .stats {
+            margin: 30px 0;
+            font-size: 20px;
+        }
+
+        .stat-row {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
         }
 
         .countdown {
@@ -249,57 +182,33 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 120px;
+            font-size: 150px;
             font-weight: bold;
-            color: #00ffff;
-            text-shadow: 0 0 40px #00ffff;
+            color: #ff6600;
+            text-shadow: 0 0 50px #ff6600;
             animation: countdownPulse 1s ease-in-out;
             pointer-events: none;
+            z-index: 1000;
         }
 
         @keyframes countdownPulse {
             0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .spectator-mode {
+        .difficulty-indicator {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid #ff0000;
-        }
-
-        .powerup-indicator {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
+            top: 20px;
+            right: 20px;
             background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
+            padding: 10px 20px;
             border-radius: 10px;
+            border: 2px solid #ff6600;
         }
 
-        .powerup-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+        .difficulty-stars {
+            color: #ffdd00;
             font-size: 24px;
         }
     </style>
@@ -307,97 +216,168 @@
 <body>
     <!-- MENU SCREEN -->
     <div id="menu" class="screen active">
-        <h1>💣 BOMBERMAN ONLINE 💣</h1>
+        <h1>💣 BOMBERMAN 💣</h1>
+        <p class="subtitle">Endless Survival Mode</p>
         
-        <div class="input-group">
-            <label>Tên người chơi:</label>
-            <input type="text" id="playerName" placeholder="Nhập tên của bạn" maxlength="15" value="Player">
-        </div>
-
-        <div class="input-group">
-            <label>Chọn nhân vật:</label>
-            <div class="skin-selector">
-                <div class="skin-option selected" data-skin="0">🔴</div>
-                <div class="skin-option" data-skin="1">🔵</div>
-                <div class="skin-option" data-skin="2">🟢</div>
-                <div class="skin-option" data-skin="3">🟡</div>
-                <div class="skin-option" data-skin="4">🟣</div>
-                <div class="skin-option" data-skin="5">🟠</div>
+        <div style="margin: 20px 0; font-size: 20px;">
+            <div style="color: #ffdd00; margin: 10px 0;">
+                🏆 High Score: <span id="highScoreDisplay">0</span>
+            </div>
+            <div style="color: #888; font-size: 14px; max-width: 400px; margin: 20px auto;">
+                ⚡ Map expands every 2 levels<br>
+                👾 More enemies each level<br>
+                🔥 Enemies get faster & smarter<br>
+                💀 Survive as long as you can!
             </div>
         </div>
-
-        <div class="input-group">
-            <label>Kích thước map:</label>
-            <select id="mapSize">
-                <option value="6">Nhỏ (6x6)</option>
-                <option value="8">Vừa (8x8)</option>
-                <option value="16" selected>Lớn (16x16)</option>
-                <option value="32">Siêu lớn (32x32)</option>
-            </select>
+        
+        <div style="margin: 30px 0;">
+            <button class="btn-primary" onclick="startGame()">🎮 START GAME</button>
         </div>
-
-        <div>
-            <button class="btn-primary" onclick="joinGame()">CHƠI NGAY!</button>
-        </div>
-    </div>
-
-    <!-- LOBBY SCREEN -->
-    <div id="lobby" class="screen">
-        <h2>🎮 Phòng Chờ 🎮</h2>
-        <p style="margin: 10px 0; font-size: 16px;">Đang chờ người chơi khác... (Tối đa 4 người)</p>
-        <div class="player-list" id="playerList"></div>
-        <div>
-            <button class="btn-primary" id="startBtn" onclick="startGame()" disabled>Bắt Đầu (Cần 2-4 người)</button>
-            <button class="btn-secondary" onclick="backToMenu()">Quay Lại</button>
+        
+        <div style="margin-top: 30px; font-size: 14px; color: #888;">
+            <p>Controls: Arrow Keys + Space (Bomb)</p>
         </div>
     </div>
 
     <!-- GAME SCREEN -->
     <div id="gameContainer" class="screen">
-        <div id="gameUI"></div>
+        <div id="gameHUD">
+            <div class="hud-item">
+                <span class="hud-label">LEVEL:</span>
+                <span class="hud-value level" id="levelDisplay">1</span>
+                <span style="font-size: 14px; color: #ffaa00; margin-left: 5px;" id="difficultyDisplay">(Easy)</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">MAP:</span>
+                <span class="hud-value" id="mapSizeDisplay">11x11</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">LIVES:</span>
+                <span class="hud-value lives" id="livesDisplay">3</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">SCORE:</span>
+                <span class="hud-value score" id="scoreDisplay">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">ENEMIES:</span>
+                <span class="hud-value" id="enemiesDisplay">0</span>
+            </div>
+        </div>
         <canvas id="gameCanvas"></canvas>
-        <div id="powerupIndicator" class="powerup-indicator"></div>
+    </div>
+
+    <!-- LEVEL COMPLETE SCREEN -->
+    <div id="levelComplete" class="screen">
+        <h2 class="level-title">🎯 LEVEL <span id="completedLevel">1</span> COMPLETE!</h2>
+        <div class="stats">
+            <div class="stat-row">
+                <span>Enemies Defeated:</span>
+                <span id="enemiesKilled">0</span>
+            </div>
+            <div class="stat-row">
+                <span>Score:</span>
+                <span id="levelScore">0</span>
+            </div>
+            <div class="stat-row">
+                <span>Bonus:</span>
+                <span id="levelBonus">+500</span>
+            </div>
+            <div class="stat-row" style="border-top: 2px solid #ffaa00; margin-top: 10px; padding-top: 10px;">
+                <span style="font-weight: bold;">Next Level:</span>
+                <span id="nextLevelInfo" style="color: #ffaa00;">Level 2</span>
+            </div>
+            <div style="margin-top: 15px; color: #888; font-size: 14px;" id="nextLevelDetails">
+                Map: 11x11 → 13x13 | Enemies: 3 → 4
+            </div>
+        </div>
+        <button class="btn-primary" onclick="nextLevel()">NEXT LEVEL ➜</button>
     </div>
 
     <!-- GAME OVER SCREEN -->
-    <div id="gameOver" class="screen">
-        <h1>🏆 KẾT THÚC GAME 🏆</h1>
-        <div class="leaderboard" id="leaderboard"></div>
-        <div>
-            <button class="btn-primary" onclick="playAgain()">Chơi Lại</button>
-            <button class="btn-secondary" onclick="backToMenu()">Menu Chính</button>
+    <div id="gameOverScreen" class="screen">
+        <h2 class="game-over-title">💀 GAME OVER 💀</h2>
+        <div class="stats">
+            <div class="stat-row">
+                <span>Survived to Level:</span>
+                <span id="finalLevel">1</span>
+            </div>
+            <div class="stat-row">
+                <span>Final Score:</span>
+                <span id="finalScore">0</span>
+            </div>
+            <div class="stat-row" style="background: rgba(255, 215, 0, 0.2);">
+                <span>🏆 High Score:</span>
+                <span id="highScoreGameOver">0</span>
+            </div>
+            <div id="newHighScore" style="display: none; margin-top: 20px; font-size: 24px; color: #ffdd00; animation: glow 1s ease-in-out infinite;">
+                🎉 NEW HIGH SCORE! 🎉
+            </div>
         </div>
+        <button class="btn-primary" onclick="restartGame()">TRY AGAIN</button>
+        <button class="btn-secondary" onclick="backToMenu()">MAIN MENU</button>
     </div>
 
     <script>
         // ===== CONFIGURATION =====
         const CONFIG = {
             TILE_SIZE: 32,
-            BASE_MAP_SIZE: 32,
+            MAP_SIZE: 15,
             FPS: 60,
             BOMB_TIMER: 3000,
-            POWERUP_CHANCE: 0.18,
-            MAX_PLAYERS: 4,
-            GAME_TIME: 300000, // 5 minutes
-            PLAYER_COLORS: ['#ff3333', '#3333ff', '#33ff33', '#ffff33', '#ff33ff', '#ff9933'],
-            PLAYER_EMOJIS: ['🔴', '🔵', '🟢', '🟡', '🟣', '🟠']
+            POWERUP_CHANCE: 0.2,
+            PLAYER_COLORS: ['#ff3333', '#3333ff', '#33ff33', '#ffff33'],
+            AI_COLORS: ['#ff6600', '#9933ff', '#00ccff', '#ff0099']
         };
 
-        // ===== GLOBAL STATE =====
-        let currentScreen = 'menu';
+        // ===== GAME STATE =====
+        let currentLevel = 1;
+        let playerLives = 3;
+        let playerScore = 0;
         let gameInstance = null;
-        let playerConfig = {
-            name: 'Player',
-            skin: 0,
-            mapSize: 16
-        };
-        
-        // Shared lobby (simulated - in real app this would be on server)
-        const SHARED_ROOM_KEY = 'bomberman_shared_room';
-        let myPlayerId = null;
-        let lobbyCheckInterval = null;
+        let highScore = localStorage.getItem('bomberman_highscore') || 0;
 
-        // ===== PERLIN NOISE FOR MAP GENERATION =====
+        // ===== LEVEL CONFIGURATIONS (ENDLESS SCALING) =====
+        function getLevelConfig(level) {
+            // Map size increases every 2 levels: 11, 11, 13, 13, 15, 15, 17...
+            const mapSize = Math.min(11 + Math.floor((level - 1) / 2) * 2, 25);
+            
+            // Enemies increase by 1 every level, cap at 15
+            const enemies = Math.min(2 + level - 1, 15);
+            
+            // Speed increases by 10% per level, cap at 3.5x
+            const speed = Math.min(1.0 + (level - 1) * 0.1, 3.5);
+            
+            // Intelligence increases, cap at 95%
+            const intelligence = Math.min(0.3 + (level - 1) * 0.05, 0.95);
+            
+            // Soft walls density increases (more obstacles)
+            const wallDensity = Math.min(0.3 + (level - 1) * 0.02, 0.6);
+            
+            return {
+                mapSize,
+                enemies,
+                speed,
+                intelligence,
+                wallDensity,
+                name: getDifficultyName(level)
+            };
+        }
+
+        function getDifficultyName(level) {
+            if (level === 1) return "Tutorial";
+            if (level <= 3) return "Easy";
+            if (level <= 5) return "Normal";
+            if (level <= 7) return "Hard";
+            if (level <= 10) return "Expert";
+            if (level <= 15) return "Master";
+            if (level <= 20) return "Insane";
+            if (level <= 30) return "Nightmare";
+            return "HELL";
+        }
+
+        // ===== PERLIN NOISE =====
         class PerlinNoise {
             constructor(seed = Math.random()) {
                 this.seed = seed;
@@ -458,28 +438,15 @@
 
         // ===== MAP GENERATOR =====
         class MapGenerator {
-            constructor(seed) {
+            constructor(seed, wallDensity = 0.3) {
                 this.perlin = new PerlinNoise(seed);
-                this.baseSize = CONFIG.BASE_MAP_SIZE;
+                this.wallDensity = wallDensity;
             }
 
-            generateMap(targetSize) {
-                // Always generate 32x32 base map
-                const baseMap = this.createBaseMap();
-                
-                // Crop to target size
-                if (targetSize < this.baseSize) {
-                    return this.cropMap(baseMap, targetSize);
-                }
-                
-                return baseMap;
-            }
-
-            createBaseMap() {
-                const size = this.baseSize;
+            generateMap(size) {
                 const map = Array(size).fill(null).map(() => Array(size).fill(0));
                 
-                // 1. Border walls (hard walls)
+                // Borders
                 for (let y = 0; y < size; y++) {
                     for (let x = 0; x < size; x++) {
                         if (x === 0 || x === size - 1 || y === 0 || y === size - 1) {
@@ -488,215 +455,188 @@
                     }
                 }
                 
-                // 2. Create spawn zones (3x3 corners)
-                const spawns = [
-                    {x: 1, y: 1}, // Top-left
-                    {x: size - 4, y: 1}, // Top-right
-                    {x: 1, y: size - 4}, // Bottom-left
-                    {x: size - 4, y: size - 4} // Bottom-right
-                ];
-                
-                spawns.forEach(spawn => {
-                    for (let dy = 0; dy < 3; dy++) {
-                        for (let dx = 0; dx < 3; dx++) {
-                            map[spawn.y + dy][spawn.x + dx] = 0; // Keep clear
-                        }
-                    }
-                });
-                
-                // 3. Pattern hard walls (maze structure)
-                for (let y = 2; y < size - 2; y += 2) {
-                    for (let x = 2; x < size - 2; x += 2) {
-                        // Skip spawn zones
-                        const inSpawn = spawns.some(s => 
-                            x >= s.x && x < s.x + 3 && y >= s.y && y < s.y + 3
-                        );
-                        if (!inSpawn) {
-                            map[y][x] = 1; // Hard wall pattern
-                        }
+                // Pattern hard walls (more dense for larger maps)
+                const patternDensity = Math.max(2, Math.floor(size / 8));
+                for (let y = patternDensity; y < size - patternDensity; y += patternDensity) {
+                    for (let x = patternDensity; x < size - patternDensity; x += patternDensity) {
+                        map[y][x] = 1;
                     }
                 }
                 
-                // 4. Add soft walls with Perlin noise
+                // Soft walls with Perlin noise and dynamic density
                 for (let y = 1; y < size - 1; y++) {
                     for (let x = 1; x < size - 1; x++) {
                         if (map[y][x] !== 0) continue;
                         
-                        const inSpawn = spawns.some(s => 
-                            x >= s.x && x < s.x + 3 && y >= s.y && y < s.y + 3
-                        );
+                        // Keep spawn clear (top-left corner)
+                        if (x <= 3 && y <= 3) continue;
                         
-                        if (!inSpawn) {
-                            const noise = this.perlin.noise(x * 0.2, y * 0.2);
-                            const rand = Math.random();
-                            
-                            if (noise > 0.1 && rand < 0.3) {
-                                map[y][x] = 2; // Soft wall
-                            } else if (noise < -0.3 && rand < 0.1) {
-                                map[y][x] = 3; // Tree
-                            } else if (rand < 0.05) {
-                                map[y][x] = 4; // Bush
+                        const noise = this.perlin.noise(x * 0.3, y * 0.3);
+                        if (noise > 0.1 && Math.random() < this.wallDensity) {
+                            map[y][x] = 2; // Soft wall
+                        }
+                    }
+                }
+                
+                return map;
+            }
+        }
+
+        // ===== POWER-UPS =====
+        const POWERUPS = {
+            FIRE: { emoji: '🔥', effect: 'range' },
+            BOMB: { emoji: '💣', effect: 'count' },
+            SPEED: { emoji: '⚡', effect: 'speed' },
+            LIFE: { emoji: '❤️', effect: 'life' }
+        };
+
+        class PowerUp {
+            constructor(type, x, y) {
+                this.type = type;
+                this.gridX = x;
+                this.gridY = y;
+                this.x = x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                this.y = y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                this.bobOffset = 0;
+            }
+
+            update(deltaTime) {
+                this.bobOffset = Math.sin(Date.now() / 200) * 3;
+            }
+        }
+
+        // ===== PLAYER =====
+        class Player {
+            constructor(x, y, isAI = false, aiLevel = 1) {
+                this.x = x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                this.y = y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+                this.gridX = x;
+                this.gridY = y;
+                this.speed = 2.5;
+                this.bombCount = 1;
+                this.bombRange = 2;
+                this.alive = true;
+                this.isAI = isAI;
+                this.activeBombs = 0;
+                
+                // AI properties
+                if (isAI) {
+                    const config = getLevelConfig(aiLevel);
+                    this.aiIntelligence = config.intelligence;
+                    this.speed *= config.speed;
+                    this.aiThinkTimer = 0;
+                    this.aiTarget = null;
+                    this.aiPath = [];
+                }
+            }
+
+            update(deltaTime, game) {
+                this.gridX = Math.floor(this.x / CONFIG.TILE_SIZE);
+                this.gridY = Math.floor(this.y / CONFIG.TILE_SIZE);
+                
+                if (this.isAI) {
+                    this.updateAI(deltaTime, game);
+                }
+            }
+
+            updateAI(deltaTime, game) {
+                this.aiThinkTimer += deltaTime;
+                
+                // AI thinks every 500ms
+                if (this.aiThinkTimer >= 500) {
+                    this.aiThinkTimer = 0;
+                    this.makeAIDecision(game);
+                }
+                
+                // Execute current action
+                if (this.aiPath && this.aiPath.length > 0) {
+                    const target = this.aiPath[0];
+                    const dx = target.x - this.gridX;
+                    const dy = target.y - this.gridY;
+                    
+                    if (Math.abs(dx) < 0.3 && Math.abs(dy) < 0.3) {
+                        this.aiPath.shift();
+                    } else {
+                        const len = Math.sqrt(dx * dx + dy * dy);
+                        this.move(dx / len, dy / len, game.map);
+                    }
+                }
+            }
+
+            makeAIDecision(game) {
+                // Random chance to place bomb based on intelligence
+                if (Math.random() < this.aiIntelligence * 0.3) {
+                    if (this.activeBombs < this.bombCount) {
+                        const shouldPlaceBomb = this.evaluateBombPlacement(game);
+                        if (shouldPlaceBomb) {
+                            const bomb = this.placeBomb(game);
+                            if (bomb) {
+                                game.bombs.push(bomb);
+                                // After placing bomb, move away
+                                this.aiPath = this.findSafePath(game);
+                                return;
                             }
                         }
                     }
                 }
                 
-                // 5. Ensure connectivity
-                this.ensureConnectivity(map, spawns);
-                
-                return map;
+                // Random movement
+                if (Math.random() < 0.3) {
+                    const directions = [
+                        {x: 1, y: 0}, {x: -1, y: 0},
+                        {x: 0, y: 1}, {x: 0, y: -1}
+                    ];
+                    const dir = directions[Math.floor(Math.random() * directions.length)];
+                    this.aiPath = [{x: this.gridX + dir.x, y: this.gridY + dir.y}];
+                }
             }
 
-            ensureConnectivity(map, spawns) {
-                // Simple connectivity check using flood fill
-                const size = map.length;
-                const visited = Array(size).fill(null).map(() => Array(size).fill(false));
+            evaluateBombPlacement(game) {
+                // Check if there are destructible walls nearby
+                const directions = [{x: 1, y: 0}, {x: -1, y: 0}, {x: 0, y: 1}, {x: 0, y: -1}];
+                for (let dir of directions) {
+                    for (let i = 1; i <= this.bombRange; i++) {
+                        const checkX = this.gridX + dir.x * i;
+                        const checkY = this.gridY + dir.y * i;
+                        
+                        if (checkX < 0 || checkX >= game.mapSize || checkY < 0 || checkY >= game.mapSize) break;
+                        
+                        const tile = game.map[checkY][checkX];
+                        if (tile === 1) break; // Hard wall
+                        if (tile === 2) return true; // Soft wall - good target!
+                    }
+                }
                 
-                const floodFill = (x, y) => {
-                    if (x < 0 || x >= size || y < 0 || y >= size) return;
-                    if (visited[y][x] || map[y][x] === 1) return;
+                return Math.random() < 0.1; // 10% chance to place bomb anyway
+            }
+
+            findSafePath(game) {
+                // Simple escape: move away from current position
+                const safeDirs = [];
+                const directions = [{x: 1, y: 0}, {x: -1, y: 0}, {x: 0, y: 1}, {x: 0, y: -1}];
+                
+                for (let dir of directions) {
+                    const newX = this.gridX + dir.x;
+                    const newY = this.gridY + dir.y;
                     
-                    visited[y][x] = true;
-                    floodFill(x + 1, y);
-                    floodFill(x - 1, y);
-                    floodFill(x, y + 1);
-                    floodFill(x, y - 1);
-                };
-                
-                // Start flood fill from first spawn
-                floodFill(spawns[0].x + 1, spawns[0].y + 1);
-                
-                // Check if all spawns are reachable
-                for (let spawn of spawns) {
-                    if (!visited[spawn.y + 1][spawn.x + 1]) {
-                        // Create path to unreachable spawn
-                        this.createPath(map, spawns[0], spawn);
-                    }
-                }
-            }
-
-            createPath(map, from, to) {
-                let x = from.x + 1;
-                let y = from.y + 1;
-                const tx = to.x + 1;
-                const ty = to.y + 1;
-                
-                while (x !== tx || y !== ty) {
-                    if (map[y][x] === 2) map[y][x] = 0; // Remove soft walls
-                    
-                    if (x < tx) x++;
-                    else if (x > tx) x--;
-                    else if (y < ty) y++;
-                    else if (y > ty) y--;
-                }
-            }
-
-            cropMap(baseMap, targetSize) {
-                const offset = Math.floor((this.baseSize - targetSize) / 2);
-                const cropped = [];
-                
-                for (let y = offset; y < offset + targetSize; y++) {
-                    cropped.push(baseMap[y].slice(offset, offset + targetSize));
-                }
-                
-                return cropped;
-            }
-
-            getSpawnPositions(mapSize) {
-                // Return spawn positions based on map size
-                const positions = [
-                    {x: 1, y: 1},
-                    {x: mapSize - 2, y: 1},
-                    {x: 1, y: mapSize - 2},
-                    {x: mapSize - 2, y: mapSize - 2}
-                ];
-                return positions;
-            }
-        }
-
-        // ===== POWER-UP TYPES =====
-        const POWERUP_TYPES = {
-            FIRE_UP: { emoji: '🔥', name: 'Fire Up', effect: 'fireRange' },
-            BOMB_UP: { emoji: '💣', name: 'Bomb Up', effect: 'bombCount' },
-            SPEED_UP: { emoji: '⚡', name: 'Speed Up', effect: 'speed' },
-            PIERCE_BOMB: { emoji: '☠️', name: 'Pierce Bomb', effect: 'pierce' },
-            POWER_BOMB: { emoji: '💥', name: 'Power Bomb', effect: 'powerBomb' },
-            REMOTE_BOMB: { emoji: '🎯', name: 'Remote Bomb', effect: 'remote' },
-            KICK_BOMB: { emoji: '🦶', name: 'Kick Bomb', effect: 'kick' },
-            SHIELD: { emoji: '🛡️', name: 'Shield', effect: 'shield' },
-            EXTRA_LIFE: { emoji: '❤️', name: 'Extra Life', effect: 'life' },
-            GHOST: { emoji: '👻', name: 'Ghost', effect: 'ghost' },
-            STAR: { emoji: '⭐', name: 'Star', effect: 'invincible' },
-            MYSTERY: { emoji: '🎲', name: 'Mystery Box', effect: 'mystery' },
-            WAVE_BOMB: { emoji: '🌊', name: 'Wave Bomb', effect: 'wave' },
-            FAST_BOMB: { emoji: '⏱️', name: 'Fast Bomb', effect: 'fastBomb' },
-            SKULL: { emoji: '💀', name: 'Skull', effect: 'skull' }
-        };
-
-        // ===== PLAYER CLASS =====
-        class Player {
-            constructor(id, name, skin, x, y) {
-                this.id = id;
-                this.name = name;
-                this.skin = skin;
-                this.x = x;
-                this.y = y;
-                this.gridX = x;
-                this.gridY = y;
-                this.speed = 2.5;
-                this.bombCount = 1;
-                this.fireRange = 2;
-                this.lives = 1;
-                this.score = 0;
-                this.kills = 0;
-                this.deaths = 0;
-                this.activeBombs = 0;
-                this.powerups = [];
-                this.alive = true;
-                this.invincible = false;
-                this.invincibleTimer = 0;
-                this.ghostMode = false;
-                this.ghostTimer = 0;
-                this.shieldActive = false;
-                this.cursed = false;
-                this.cursedTimer = 0;
-            }
-
-            update(deltaTime, map) {
-                // Update grid position
-                this.gridX = Math.floor(this.x / CONFIG.TILE_SIZE);
-                this.gridY = Math.floor(this.y / CONFIG.TILE_SIZE);
-                
-                // Update timers
-                if (this.invincible) {
-                    this.invincibleTimer -= deltaTime;
-                    if (this.invincibleTimer <= 0) {
-                        this.invincible = false;
+                    if (newX > 0 && newX < game.mapSize - 1 && newY > 0 && newY < game.mapSize - 1) {
+                        if (game.map[newY][newX] === 0) {
+                            safeDirs.push({x: newX, y: newY});
+                        }
                     }
                 }
                 
-                if (this.ghostMode) {
-                    this.ghostTimer -= deltaTime;
-                    if (this.ghostTimer <= 0) {
-                        this.ghostMode = false;
-                    }
+                if (safeDirs.length > 0) {
+                    return [safeDirs[Math.floor(Math.random() * safeDirs.length)]];
                 }
                 
-                if (this.cursed) {
-                    this.cursedTimer -= deltaTime;
-                    if (this.cursedTimer <= 0) {
-                        this.cursed = false;
-                    }
-                }
+                return [];
             }
 
             move(dx, dy, map) {
-                if (!this.alive) return;
-                
                 const newX = this.x + dx * this.speed;
                 const newY = this.y + dy * this.speed;
                 
-                // Collision detection
                 if (this.canMoveTo(newX, newY, map)) {
                     this.x = newX;
                     this.y = newY;
@@ -707,7 +647,6 @@
                 const tileSize = CONFIG.TILE_SIZE;
                 const margin = tileSize * 0.3;
                 
-                // Check 4 corners of player hitbox
                 const corners = [
                     {x: x - margin, y: y - margin},
                     {x: x + margin, y: y - margin},
@@ -724,36 +663,26 @@
                     }
                     
                     const tile = map[tileY][tileX];
-                    if (tile === 1 || tile === 2) { // Hard or soft wall
-                        if (!this.ghostMode) return false;
-                    }
+                    if (tile === 1 || tile === 2) return false;
                 }
                 
                 return true;
             }
 
             placeBomb(game) {
-                if (!this.alive) return null;
                 if (this.activeBombs >= this.bombCount) return null;
                 
                 const bombX = Math.floor(this.x / CONFIG.TILE_SIZE);
                 const bombY = Math.floor(this.y / CONFIG.TILE_SIZE);
                 
-                // Check if bomb already exists at position
                 const existing = game.bombs.find(b => b.gridX === bombX && b.gridY === bombY);
                 if (existing) return null;
-                
-                const hasRemote = this.powerups.includes('remote');
-                const hasFast = this.powerups.includes('fastBomb');
-                const timer = hasFast ? 1500 : CONFIG.BOMB_TIMER;
                 
                 const bomb = new Bomb(
                     bombX * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2,
                     bombY * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2,
-                    this.fireRange,
-                    this,
-                    hasRemote,
-                    timer
+                    this.bombRange,
+                    this
                 );
                 
                 this.activeBombs++;
@@ -761,109 +690,51 @@
             }
 
             collectPowerup(type) {
-                const powerup = POWERUP_TYPES[type];
+                const powerup = POWERUPS[type];
                 if (!powerup) return;
                 
-                this.score += 20;
+                playerScore += 50;
                 
                 switch (powerup.effect) {
-                    case 'fireRange':
-                        if (this.fireRange < 8) this.fireRange++;
+                    case 'range':
+                        if (this.bombRange < 8) this.bombRange++;
                         break;
-                    case 'bombCount':
+                    case 'count':
                         if (this.bombCount < 5) this.bombCount++;
                         break;
                     case 'speed':
-                        if (this.speed < 4.5) this.speed += 0.5;
+                        if (this.speed < 4) this.speed += 0.5;
                         break;
                     case 'life':
-                        if (this.lives < 3) this.lives++;
+                        if (!this.isAI) playerLives++;
                         break;
-                    case 'shield':
-                        this.shieldActive = true;
-                        break;
-                    case 'invincible':
-                        this.invincible = true;
-                        this.invincibleTimer = 8000;
-                        break;
-                    case 'ghost':
-                        this.ghostMode = true;
-                        this.ghostTimer = 5000;
-                        break;
-                    case 'skull':
-                        this.cursed = true;
-                        this.cursedTimer = 5000;
-                        // Random debuff
-                        const debuffs = ['slow', 'weak', 'reverse'];
-                        const debuff = debuffs[Math.floor(Math.random() * debuffs.length)];
-                        if (debuff === 'slow') this.speed = Math.max(1, this.speed - 1);
-                        if (debuff === 'weak') this.fireRange = Math.max(1, this.fireRange - 1);
-                        break;
-                    case 'mystery':
-                        // Random powerup
-                        const types = Object.keys(POWERUP_TYPES).filter(t => t !== 'MYSTERY' && t !== 'SKULL');
-                        const randomType = types[Math.floor(Math.random() * types.length)];
-                        this.collectPowerup(randomType);
-                        return;
-                    default:
-                        if (!this.powerups.includes(powerup.effect)) {
-                            this.powerups.push(powerup.effect);
-                        }
                 }
             }
 
             takeDamage() {
-                if (this.invincible) return false;
-                
-                if (this.shieldActive) {
-                    this.shieldActive = false;
-                    return false;
+                this.alive = false;
+                if (!this.isAI) {
+                    playerLives--;
                 }
-                
-                this.lives--;
-                if (this.lives <= 0) {
-                    this.alive = false;
-                    this.deaths++;
-                    return true;
-                }
-                
-                // Temporary invincibility
-                this.invincible = true;
-                this.invincibleTimer = 2000;
-                return false;
-            }
-
-            addKill() {
-                this.kills++;
-                this.score += 100;
             }
         }
 
-        // ===== BOMB CLASS =====
+        // ===== BOMB =====
         class Bomb {
-            constructor(x, y, range, owner, remote, timer) {
+            constructor(x, y, range, owner) {
                 this.x = x;
                 this.y = y;
                 this.gridX = Math.floor(x / CONFIG.TILE_SIZE);
                 this.gridY = Math.floor(y / CONFIG.TILE_SIZE);
                 this.range = range;
                 this.owner = owner;
-                this.timer = timer || CONFIG.BOMB_TIMER;
-                this.remote = remote;
+                this.timer = CONFIG.BOMB_TIMER;
                 this.exploded = false;
-                this.fusePhase = 0;
             }
 
             update(deltaTime) {
-                if (this.remote) return; // Don't countdown remote bombs
-                
                 this.timer -= deltaTime;
-                this.fusePhase = Math.floor((CONFIG.BOMB_TIMER - this.timer) / 200) % 2;
-                
-                if (this.timer <= 0) {
-                    return true; // Ready to explode
-                }
-                return false;
+                return this.timer <= 0;
             }
 
             explode(game) {
@@ -873,16 +744,8 @@
                 this.owner.activeBombs--;
                 
                 const explosions = [];
-                const hasPierce = this.owner.powerups.includes('pierce');
-                const hasWave = this.owner.powerups.includes('wave');
-                const hasPower = this.owner.powerups.includes('powerBomb');
-                
-                const range = hasPower ? 8 : this.range;
-                
-                // Center explosion
                 explosions.push({x: this.gridX, y: this.gridY});
                 
-                // Four directions
                 const directions = [
                     {dx: 1, dy: 0},
                     {dx: -1, dy: 0},
@@ -891,27 +754,21 @@
                 ];
                 
                 directions.forEach(dir => {
-                    for (let i = 1; i <= range; i++) {
+                    for (let i = 1; i <= this.range; i++) {
                         const x = this.gridX + dir.dx * i;
                         const y = this.gridY + dir.dy * i;
                         
                         if (x < 0 || x >= game.mapSize || y < 0 || y >= game.mapSize) break;
                         
                         const tile = game.map[y][x];
-                        
-                        // Hard wall stops explosion
                         if (tile === 1) break;
                         
                         explosions.push({x, y});
                         
-                        // Soft wall: destroy and maybe stop
                         if (tile === 2) {
                             game.destroyWall(x, y);
-                            if (!hasPierce) break;
+                            break;
                         }
-                        
-                        // Wave bomb goes through everything
-                        if (!hasWave && tile === 2 && !hasPierce) break;
                     }
                 });
                 
@@ -919,7 +776,7 @@
             }
         }
 
-        // ===== EXPLOSION CLASS =====
+        // ===== EXPLOSION =====
         class Explosion {
             constructor(x, y) {
                 this.gridX = x;
@@ -929,8 +786,7 @@
                 this.timer = 500;
                 this.particles = [];
                 
-                // Create particles
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 8; i++) {
                     this.particles.push({
                         x: 0,
                         y: 0,
@@ -954,44 +810,29 @@
             }
         }
 
-        // ===== POWERUP CLASS =====
-        class PowerUp {
-            constructor(type, x, y) {
-                this.type = type;
-                this.gridX = x;
-                this.gridY = y;
-                this.x = x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
-                this.y = y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
-                this.bobOffset = 0;
-                this.rotation = 0;
-            }
-
-            update(deltaTime) {
-                this.bobOffset = Math.sin(Date.now() / 200) * 3;
-                this.rotation += deltaTime / 50;
-            }
-        }
-
         // ===== GAME CLASS =====
         class Game {
-            constructor(mapSize, players) {
-                this.mapSize = mapSize;
-                this.players = players;
+            constructor(level) {
+                this.level = level;
+                this.config = getLevelConfig(level);
+                this.mapSize = this.config.mapSize;
+                this.player = null;
+                this.enemies = [];
                 this.bombs = [];
                 this.explosions = [];
                 this.powerups = [];
                 this.map = null;
-                this.gameTime = CONFIG.GAME_TIME;
                 this.running = false;
                 this.countingDown = true;
                 this.countdownValue = 3;
+                this.enemiesKilled = 0;
                 
                 this.canvas = document.getElementById('gameCanvas');
                 this.ctx = this.canvas.getContext('2d');
                 
                 this.setupCanvas();
                 this.generateMap();
-                this.spawnPlayers();
+                this.spawnEntities();
                 
                 this.keys = {};
                 this.setupInput();
@@ -1006,62 +847,69 @@
             }
 
             generateMap() {
-                const generator = new MapGenerator(Date.now());
+                const generator = new MapGenerator(Date.now(), this.config.wallDensity);
                 this.map = generator.generateMap(this.mapSize);
-                this.spawnPositions = generator.getSpawnPositions(this.mapSize);
             }
 
-            spawnPlayers() {
-                this.players.forEach((player, index) => {
-                    if (index < this.spawnPositions.length) {
-                        const spawn = this.spawnPositions[index];
-                        player.x = spawn.x * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
-                        player.y = spawn.y * CONFIG.TILE_SIZE + CONFIG.TILE_SIZE / 2;
+            spawnEntities() {
+                // Player at top-left
+                this.player = new Player(1, 1, false);
+                
+                // Enemies
+                const spawnPositions = this.getEnemySpawnPositions(this.config.enemies);
+                
+                this.enemies = spawnPositions.map(pos => 
+                    new Player(pos.x, pos.y, true, this.level)
+                );
+            }
+
+            getEnemySpawnPositions(count) {
+                const positions = [];
+                const size = this.mapSize;
+                
+                // Predefined safe spawn areas (away from player)
+                const safeZones = [
+                    {x: size - 2, y: 1},
+                    {x: size - 2, y: size - 2},
+                    {x: 1, y: size - 2},
+                    {x: Math.floor(size/2), y: Math.floor(size/2)},
+                    {x: Math.floor(size/2), y: 1},
+                    {x: size - 2, y: Math.floor(size/2)},
+                    {x: 1, y: Math.floor(size/2)},
+                    {x: Math.floor(size/2), y: size - 2}
+                ];
+                
+                for (let i = 0; i < Math.min(count, safeZones.length); i++) {
+                    positions.push(safeZones[i]);
+                }
+                
+                // If need more enemies, spawn randomly
+                while (positions.length < count) {
+                    const x = 3 + Math.floor(Math.random() * (size - 6));
+                    const y = 3 + Math.floor(Math.random() * (size - 6));
+                    
+                    if (this.map[y][x] === 0) {
+                        // Check distance from player
+                        if (Math.abs(x - 1) + Math.abs(y - 1) > 5) {
+                            positions.push({x, y});
+                        }
                     }
-                });
+                }
+                
+                return positions;
             }
 
             setupInput() {
-                // Player 1: Arrow Keys + Space
-                // Player 2: WASD + Q
-                // Player 3: IJKL + U
-                // Player 4: TFGH + R
-                
                 document.addEventListener('keydown', (e) => {
-                    // Prevent default for game keys
-                    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'e', 'q', 'u', 'r'].includes(e.key)) {
+                    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
                         e.preventDefault();
                     }
                     
                     this.keys[e.key.toLowerCase()] = true;
                     
-                    // Handle bomb placement
-                    if (e.key === ' ' && this.players[0] && this.players[0].alive) {
-                        const bomb = this.players[0].placeBomb(this);
+                    if (e.key === ' ' && this.player && this.player.alive && this.running) {
+                        const bomb = this.player.placeBomb(this);
                         if (bomb) this.bombs.push(bomb);
-                    } else if (e.key.toLowerCase() === 'q' && this.players[1] && this.players[1].alive) {
-                        const bomb = this.players[1].placeBomb(this);
-                        if (bomb) this.bombs.push(bomb);
-                    } else if (e.key.toLowerCase() === 'u' && this.players[2] && this.players[2].alive) {
-                        const bomb = this.players[2].placeBomb(this);
-                        if (bomb) this.bombs.push(bomb);
-                    } else if (e.key.toLowerCase() === 'r' && this.players[3] && this.players[3].alive) {
-                        const bomb = this.players[3].placeBomb(this);
-                        if (bomb) this.bombs.push(bomb);
-                    }
-                    
-                    // Remote bomb detonation
-                    if (e.key.toLowerCase() === 'e') {
-                        this.players.forEach(player => {
-                            if (player && player.powerups.includes('remote')) {
-                                const remoteBomb = this.bombs.find(b => b.owner === player && b.remote);
-                                if (remoteBomb) {
-                                    const explosions = remoteBomb.explode(this);
-                                    this.createExplosions(explosions);
-                                    this.bombs = this.bombs.filter(b => b !== remoteBomb);
-                                }
-                            }
-                        });
                     }
                 });
                 
@@ -1071,86 +919,42 @@
             }
 
             handleInput() {
-                if (!this.running) return;
+                if (!this.running || !this.player || !this.player.alive) return;
                 
-                // Player 1: Arrow Keys
-                if (this.players[0] && this.players[0].alive) {
-                    let dx = 0, dy = 0;
-                    if (this.keys['arrowleft']) dx -= 1;
-                    if (this.keys['arrowright']) dx += 1;
-                    if (this.keys['arrowup']) dy -= 1;
-                    if (this.keys['arrowdown']) dy += 1;
-                    if (dx !== 0 || dy !== 0) {
-                        const len = Math.sqrt(dx * dx + dy * dy);
-                        this.players[0].move(dx / len, dy / len, this.map);
-                    }
-                }
+                let dx = 0, dy = 0;
+                if (this.keys['arrowleft']) dx -= 1;
+                if (this.keys['arrowright']) dx += 1;
+                if (this.keys['arrowup']) dy -= 1;
+                if (this.keys['arrowdown']) dy += 1;
                 
-                // Player 2: WASD
-                if (this.players[1] && this.players[1].alive) {
-                    let dx = 0, dy = 0;
-                    if (this.keys['a']) dx -= 1;
-                    if (this.keys['d']) dx += 1;
-                    if (this.keys['w']) dy -= 1;
-                    if (this.keys['s']) dy += 1;
-                    if (dx !== 0 || dy !== 0) {
-                        const len = Math.sqrt(dx * dx + dy * dy);
-                        this.players[1].move(dx / len, dy / len, this.map);
-                    }
-                }
-                
-                // Player 3: IJKL
-                if (this.players[2] && this.players[2].alive) {
-                    let dx = 0, dy = 0;
-                    if (this.keys['j']) dx -= 1;
-                    if (this.keys['l']) dx += 1;
-                    if (this.keys['i']) dy -= 1;
-                    if (this.keys['k']) dy += 1;
-                    if (dx !== 0 || dy !== 0) {
-                        const len = Math.sqrt(dx * dx + dy * dy);
-                        this.players[2].move(dx / len, dy / len, this.map);
-                    }
-                }
-                
-                // Player 4: TFGH
-                if (this.players[3] && this.players[3].alive) {
-                    let dx = 0, dy = 0;
-                    if (this.keys['f']) dx -= 1;
-                    if (this.keys['h']) dx += 1;
-                    if (this.keys['t']) dy -= 1;
-                    if (this.keys['g']) dy += 1;
-                    if (dx !== 0 || dy !== 0) {
-                        const len = Math.sqrt(dx * dx + dy * dy);
-                        this.players[3].move(dx / len, dy / len, this.map);
-                    }
+                if (dx !== 0 || dy !== 0) {
+                    const len = Math.sqrt(dx * dx + dy * dy);
+                    this.player.move(dx / len, dy / len, this.map);
                 }
             }
 
             update(deltaTime) {
-                if (this.countingDown) {
-                    return;
-                }
-                
+                if (this.countingDown) return;
                 if (!this.running) return;
                 
-                // Update game timer
-                this.gameTime -= deltaTime;
-                if (this.gameTime <= 0) {
-                    this.endGame();
-                    return;
-                }
-                
-                // Handle input
                 this.handleInput();
                 
-                // Update players
-                this.players.forEach(player => player.update(deltaTime, this.map));
+                // Update player
+                if (this.player) {
+                    this.player.update(deltaTime, this);
+                }
+                
+                // Update enemies
+                this.enemies.forEach(enemy => {
+                    if (enemy.alive) {
+                        enemy.update(deltaTime, this);
+                    }
+                });
                 
                 // Update bombs
                 for (let i = this.bombs.length - 1; i >= 0; i--) {
-                    const bomb = this.bombs[i];
-                    if (bomb.update(deltaTime)) {
-                        const explosions = bomb.explode(this);
+                    if (this.bombs[i].update(deltaTime)) {
+                        const explosions = this.bombs[i].explode(this);
                         this.createExplosions(explosions);
                         this.bombs.splice(i, 1);
                     }
@@ -1169,18 +973,18 @@
                 // Check collisions
                 this.checkCollisions();
                 
-                // Check win condition
-                const alivePlayers = this.players.filter(p => p.alive);
-                if (alivePlayers.length <= 1) {
-                    this.endGame();
-                }
+                // Update HUD
+                this.updateHUD();
+                
+                // Check win/lose conditions
+                this.checkGameState();
             }
 
             createExplosions(positions) {
                 positions.forEach(pos => {
                     this.explosions.push(new Explosion(pos.x, pos.y));
                     
-                    // Chain reaction: detonate other bombs
+                    // Chain reaction
                     this.bombs.forEach(bomb => {
                         if (bomb.gridX === pos.x && bomb.gridY === pos.y && !bomb.exploded) {
                             setTimeout(() => {
@@ -1197,22 +1001,18 @@
 
             destroyWall(x, y) {
                 if (this.map[y][x] === 2) {
-                    this.map[y][x] = 0; // Clear soft wall
+                    this.map[y][x] = 0;
+                    playerScore += 10;
                     
                     // Spawn powerup
                     if (Math.random() < CONFIG.POWERUP_CHANCE) {
                         this.spawnPowerUp(x, y);
                     }
-                    
-                    // Award points
-                    this.players.forEach(p => {
-                        if (p.alive) p.score += 10;
-                    });
                 }
             }
 
             spawnPowerUp(x, y) {
-                const types = Object.keys(POWERUP_TYPES);
+                const types = Object.keys(POWERUPS);
                 const type = types[Math.floor(Math.random() * types.length)];
                 this.powerups.push(new PowerUp(type, x, y));
             }
@@ -1220,59 +1020,112 @@
             checkCollisions() {
                 // Player vs Explosion
                 this.explosions.forEach(exp => {
-                    this.players.forEach(player => {
-                        if (!player.alive) return;
-                        
-                        if (player.gridX === exp.gridX && player.gridY === exp.gridY) {
-                            const died = player.takeDamage();
-                            if (died) {
-                                // Find who killed them
-                                const killerBomb = this.bombs.find(b => 
-                                    Math.abs(b.gridX - exp.gridX) <= b.range &&
-                                    Math.abs(b.gridY - exp.gridY) <= b.range
-                                );
-                                if (killerBomb && killerBomb.owner !== player) {
-                                    killerBomb.owner.addKill();
-                                }
-                            }
+                    if (this.player && this.player.alive) {
+                        if (this.player.gridX === exp.gridX && this.player.gridY === exp.gridY) {
+                            this.player.takeDamage();
+                        }
+                    }
+                    
+                    this.enemies.forEach(enemy => {
+                        if (enemy.alive && enemy.gridX === exp.gridX && enemy.gridY === exp.gridY) {
+                            enemy.takeDamage();
+                            playerScore += 100;
+                            this.enemiesKilled++;
                         }
                     });
                 });
                 
                 // Player vs PowerUp
-                this.powerups = this.powerups.filter(powerup => {
-                    for (let player of this.players) {
-                        if (!player.alive) continue;
-                        
-                        if (player.gridX === powerup.gridX && player.gridY === powerup.gridY) {
-                            player.collectPowerup(powerup.type);
+                if (this.player && this.player.alive) {
+                    this.powerups = this.powerups.filter(powerup => {
+                        if (this.player.gridX === powerup.gridX && this.player.gridY === powerup.gridY) {
+                            this.player.collectPowerup(powerup.type);
                             return false;
                         }
+                        return true;
+                    });
+                }
+            }
+
+            updateHUD() {
+                document.getElementById('levelDisplay').textContent = this.level;
+                document.getElementById('difficultyDisplay').textContent = `(${this.config.name})`;
+                document.getElementById('mapSizeDisplay').textContent = `${this.mapSize}x${this.mapSize}`;
+                document.getElementById('livesDisplay').textContent = playerLives;
+                document.getElementById('scoreDisplay').textContent = playerScore;
+                document.getElementById('enemiesDisplay').textContent = this.enemies.filter(e => e.alive).length;
+            }
+
+            checkGameState() {
+                // Check if player died
+                if (this.player && !this.player.alive) {
+                    if (playerLives <= 0) {
+                        this.gameOver();
+                    } else {
+                        // Respawn
+                        setTimeout(() => {
+                            this.player = new Player(1, 1, false);
+                        }, 2000);
                     }
-                    return true;
-                });
+                }
+                
+                // Check if all enemies dead
+                const aliveEnemies = this.enemies.filter(e => e.alive).length;
+                if (aliveEnemies === 0) {
+                    this.levelComplete();
+                }
+            }
+
+            levelComplete() {
+                this.running = false;
+                
+                const bonus = 500 + (this.level * 100);
+                playerScore += bonus;
+                
+                // Show next level info
+                const nextConfig = getLevelConfig(this.level + 1);
+                
+                document.getElementById('completedLevel').textContent = this.level;
+                document.getElementById('enemiesKilled').textContent = this.enemiesKilled;
+                document.getElementById('levelScore').textContent = playerScore;
+                document.getElementById('levelBonus').textContent = `+${bonus}`;
+                document.getElementById('nextLevelInfo').textContent = `Level ${this.level + 1} - ${nextConfig.name}`;
+                document.getElementById('nextLevelDetails').innerHTML = `
+                    Map: ${this.mapSize}x${this.mapSize} → ${nextConfig.mapSize}x${nextConfig.mapSize} | 
+                    Enemies: ${this.config.enemies} → ${nextConfig.enemies}
+                `;
+                
+                showScreen('levelComplete');
+            }
+
+            gameOver() {
+                this.running = false;
+                
+                // Update high score
+                if (playerScore > highScore) {
+                    highScore = playerScore;
+                    localStorage.setItem('bomberman_highscore', highScore);
+                    document.getElementById('newHighScore').style.display = 'block';
+                } else {
+                    document.getElementById('newHighScore').style.display = 'none';
+                }
+                
+                document.getElementById('finalLevel').textContent = this.level;
+                document.getElementById('finalScore').textContent = playerScore;
+                document.getElementById('highScoreGameOver').textContent = highScore;
+                
+                showScreen('gameOverScreen');
             }
 
             render() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                // Draw map
                 this.drawMap();
-                
-                // Draw powerups
-                this.powerups.forEach(p => this.drawPowerUp(p));
-                
-                // Draw bombs
-                this.bombs.forEach(b => this.drawBomb(b));
-                
-                // Draw explosions
-                this.explosions.forEach(e => this.drawExplosion(e));
-                
-                // Draw players
-                this.players.forEach(p => this.drawPlayer(p));
-                
-                // Draw UI
-                this.drawUI();
+                this.drawPowerups();
+                this.drawBombs();
+                this.drawExplosions();
+                this.drawPlayer();
+                this.drawEnemies();
             }
 
             drawMap() {
@@ -1283,56 +1136,27 @@
                         const tile = this.map[y][x];
                         
                         switch (tile) {
-                            case 0: // Ground
-                                this.ctx.fillStyle = '#90EE90';
+                            case 0:
+                                this.ctx.fillStyle = '#2a4a2a';
                                 this.ctx.fillRect(x * ts, y * ts, ts, ts);
-                                // Grass texture
-                                this.ctx.fillStyle = '#7CCD7C';
-                                for (let i = 0; i < 3; i++) {
-                                    const gx = x * ts + Math.random() * ts;
-                                    const gy = y * ts + Math.random() * ts;
-                                    this.ctx.fillRect(gx, gy, 2, 2);
-                                }
                                 break;
-                                
-                            case 1: // Hard wall
-                                this.ctx.fillStyle = '#555';
+                            case 1:
+                                this.ctx.fillStyle = '#444';
                                 this.ctx.fillRect(x * ts, y * ts, ts, ts);
-                                this.ctx.strokeStyle = '#333';
+                                this.ctx.strokeStyle = '#222';
                                 this.ctx.lineWidth = 2;
                                 this.ctx.strokeRect(x * ts, y * ts, ts, ts);
                                 break;
-                                
-                            case 2: // Soft wall
+                            case 2:
                                 this.ctx.fillStyle = '#8B4513';
                                 this.ctx.fillRect(x * ts, y * ts, ts, ts);
-                                // Wood texture
                                 this.ctx.fillStyle = '#654321';
                                 for (let i = 0; i < 4; i++) {
                                     this.ctx.fillRect(x * ts + i * 8, y * ts, 2, ts);
                                 }
                                 break;
-                                
-                            case 3: // Tree
-                                this.ctx.fillStyle = '#90EE90';
-                                this.ctx.fillRect(x * ts, y * ts, ts, ts);
-                                this.ctx.fillStyle = '#228B22';
-                                this.ctx.beginPath();
-                                this.ctx.arc(x * ts + ts/2, y * ts + ts/2, ts/3, 0, Math.PI * 2);
-                                this.ctx.fill();
-                                break;
-                                
-                            case 4: // Bush
-                                this.ctx.fillStyle = '#90EE90';
-                                this.ctx.fillRect(x * ts, y * ts, ts, ts);
-                                this.ctx.fillStyle = '#32CD32';
-                                this.ctx.beginPath();
-                                this.ctx.arc(x * ts + ts/2, y * ts + ts/2, ts/4, 0, Math.PI * 2);
-                                this.ctx.fill();
-                                break;
                         }
                         
-                        // Grid lines
                         this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
                         this.ctx.lineWidth = 1;
                         this.ctx.strokeRect(x * ts, y * ts, ts, ts);
@@ -1340,619 +1164,95 @@
                 }
             }
 
-            drawPlayer(player) {
-                if (!player.alive) return;
-                
-                const ts = CONFIG.TILE_SIZE;
-                const size = ts * 0.7;
-                
-                this.ctx.save();
-                
-                // Ghost mode transparency
-                if (player.ghostMode) {
-                    this.ctx.globalAlpha = 0.5;
-                }
-                
-                // Invincibility glow
-                if (player.invincible) {
-                    const pulse = Math.sin(Date.now() / 100) * 0.5 + 0.5;
-                    this.ctx.shadowColor = '#FFD700';
-                    this.ctx.shadowBlur = 20 + pulse * 10;
-                    
-                    // Star particles around player
-                    for (let i = 0; i < 8; i++) {
-                        const angle = (Date.now() / 500 + i / 8) * Math.PI * 2;
-                        const dist = 15 + pulse * 5;
-                        const px = player.x + Math.cos(angle) * dist;
-                        const py = player.y + Math.sin(angle) * dist;
-                        
-                        this.ctx.fillStyle = `rgba(255, 215, 0, ${pulse})`;
-                        this.ctx.beginPath();
-                        this.ctx.arc(px, py, 2, 0, Math.PI * 2);
-                        this.ctx.fill();
-                    }
-                }
-                
-                // Draw player body (pixel art style)
-                const centerX = player.x;
-                const centerY = player.y;
-                const mainColor = CONFIG.PLAYER_COLORS[player.skin];
-                const darkColor = this.darkenColor(mainColor, 0.3);
-                const lightColor = this.lightenColor(mainColor, 0.3);
-                
-                // Body
-                this.ctx.fillStyle = mainColor;
-                this.ctx.fillRect(centerX - size/2, centerY - size/2, size, size);
-                
-                // Body shading (3D effect)
-                this.ctx.fillStyle = darkColor;
-                this.ctx.fillRect(centerX + size/4, centerY - size/2, size/4, size); // Right shadow
-                this.ctx.fillRect(centerX - size/2, centerY + size/4, size, size/4); // Bottom shadow
-                
-                // Body highlight
-                this.ctx.fillStyle = lightColor;
-                this.ctx.fillRect(centerX - size/2, centerY - size/2, size/4, size/4); // Top-left highlight
-                
-                // Head (helmet)
-                const headSize = size * 0.6;
-                this.ctx.fillStyle = mainColor;
-                this.ctx.beginPath();
-                this.ctx.arc(centerX, centerY - size/3, headSize/2, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Helmet visor
-                this.ctx.fillStyle = '#000';
-                this.ctx.fillRect(centerX - headSize/3, centerY - size/3 - 3, headSize * 0.66, 6);
-                
-                // Visor reflection
-                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                this.ctx.fillRect(centerX - headSize/3, centerY - size/3 - 2, headSize * 0.4, 2);
-                
-                // Arms
-                const armWave = Math.sin(Date.now() / 200) * 3;
-                this.ctx.fillStyle = mainColor;
-                // Left arm
-                this.ctx.fillRect(centerX - size/2 - 4, centerY - size/4 + armWave, 4, size/2);
-                // Right arm  
-                this.ctx.fillRect(centerX + size/2, centerY - size/4 - armWave, 4, size/2);
-                
-                // Legs (walking animation)
-                const legOffset = Math.sin(Date.now() / 150) * 2;
-                this.ctx.fillStyle = darkColor;
-                // Left leg
-                this.ctx.fillRect(centerX - size/4, centerY + size/2 - 2, size/3, 6 + legOffset);
-                // Right leg
-                this.ctx.fillRect(centerX - size/12, centerY + size/2 - 2, size/3, 6 - legOffset);
-                
-                this.ctx.shadowBlur = 0;
-                
-                // Shield effect
-                if (player.shieldActive) {
-                    const shieldPulse = Math.sin(Date.now() / 100) * 0.3 + 0.7;
-                    this.ctx.strokeStyle = `rgba(0, 255, 255, ${shieldPulse})`;
-                    this.ctx.lineWidth = 3;
-                    this.ctx.beginPath();
-                    this.ctx.arc(centerX, centerY, size/2 + 8, 0, Math.PI * 2);
-                    this.ctx.stroke();
-                    
-                    // Shield hexagons
-                    for (let i = 0; i < 6; i++) {
-                        const angle = (Date.now() / 1000 + i / 6) * Math.PI * 2;
-                        const dist = size/2 + 8;
-                        const hx = centerX + Math.cos(angle) * dist;
-                        const hy = centerY + Math.sin(angle) * dist;
-                        
-                        this.ctx.fillStyle = `rgba(0, 255, 255, ${shieldPulse * 0.5})`;
-                        this.ctx.fillRect(hx - 2, hy - 2, 4, 4);
-                    }
-                }
-                
-                // Cursed effect
-                if (player.cursed) {
-                    const skullSize = 12;
-                    this.ctx.fillStyle = 'rgba(128, 0, 128, 0.7)';
-                    this.ctx.font = `${skullSize}px Arial`;
-                    this.ctx.textAlign = 'center';
-                    this.ctx.textBaseline = 'middle';
-                    
-                    const floatY = Math.sin(Date.now() / 200) * 5;
-                    this.ctx.fillText('💀', centerX, centerY - size/2 - 15 + floatY);
-                }
-                
-                // Name tag with better styling
-                this.ctx.shadowBlur = 0;
-                this.ctx.font = 'bold 11px Arial';
-                this.ctx.textAlign = 'center';
-                this.ctx.textBaseline = 'middle';
-                
-                const nameY = centerY - size/2 - 28;
-                
-                // Name background
-                const nameWidth = this.ctx.measureText(player.name).width;
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                this.ctx.fillRect(centerX - nameWidth/2 - 4, nameY - 7, nameWidth + 8, 14);
-                
-                // Name text
-                this.ctx.strokeStyle = '#000';
-                this.ctx.lineWidth = 3;
-                this.ctx.strokeText(player.name, centerX, nameY);
-                this.ctx.fillStyle = '#FFF';
-                this.ctx.fillText(player.name, centerX, nameY);
-                
-                // Health bar with better design
-                const barWidth = ts * 0.8;
-                const barHeight = 5;
-                const barX = centerX - barWidth / 2;
-                const barY = centerY - size/2 - 38;
-                
-                // Bar background
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                this.ctx.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
-                
-                // Bar background (empty)
-                this.ctx.fillStyle = '#333';
-                this.ctx.fillRect(barX, barY, barWidth, barHeight);
-                
-                // Bar fill (gradient)
-                const healthPercent = player.lives / 3;
-                const gradient = this.ctx.createLinearGradient(barX, barY, barX + barWidth * healthPercent, barY);
-                if (healthPercent > 0.5) {
-                    gradient.addColorStop(0, '#00FF00');
-                    gradient.addColorStop(1, '#88FF00');
-                } else if (healthPercent > 0.25) {
-                    gradient.addColorStop(0, '#FFAA00');
-                    gradient.addColorStop(1, '#FF8800');
-                } else {
-                    gradient.addColorStop(0, '#FF0000');
-                    gradient.addColorStop(1, '#AA0000');
-                }
-                
-                this.ctx.fillStyle = gradient;
-                this.ctx.fillRect(barX, barY, barWidth * healthPercent, barHeight);
-                
-                // Bar shine
-                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-                this.ctx.fillRect(barX, barY, barWidth * healthPercent, 2);
-                
-                this.ctx.restore();
-            }
-            
-            darkenColor(color, amount) {
-                const hex = color.replace('#', '');
-                const r = Math.max(0, parseInt(hex.substr(0, 2), 16) * (1 - amount));
-                const g = Math.max(0, parseInt(hex.substr(2, 2), 16) * (1 - amount));
-                const b = Math.max(0, parseInt(hex.substr(4, 2), 16) * (1 - amount));
-                return `rgb(${r}, ${g}, ${b})`;
-            }
-            
-            lightenColor(color, amount) {
-                const hex = color.replace('#', '');
-                const r = Math.min(255, parseInt(hex.substr(0, 2), 16) * (1 + amount));
-                const g = Math.min(255, parseInt(hex.substr(2, 2), 16) * (1 + amount));
-                const b = Math.min(255, parseInt(hex.substr(4, 2), 16) * (1 + amount));
-                return `rgb(${r}, ${g}, ${b})`;
+            drawPlayer() {
+                if (!this.player || !this.player.alive) return;
+                this.drawCharacter(this.player, CONFIG.PLAYER_COLORS[0]);
             }
 
-            drawBomb(bomb) {
-                const ts = CONFIG.TILE_SIZE;
-                const x = bomb.x;
-                const y = bomb.y;
-                const size = ts * 0.5;
-                
-                this.ctx.save();
-                
-                // Pulsing animation based on timer
-                const timePercent = bomb.timer / CONFIG.BOMB_TIMER;
-                const pulseScale = 1 + (1 - timePercent) * 0.1;
-                const actualSize = size * pulseScale;
-                
-                // Shadow
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                this.ctx.beginPath();
-                this.ctx.ellipse(x, y + actualSize * 0.8, actualSize * 0.8, actualSize * 0.3, 0, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Bomb body (sphere with shading)
-                const gradient = this.ctx.createRadialGradient(
-                    x - actualSize * 0.3, y - actualSize * 0.3, 0,
-                    x, y, actualSize
-                );
-                gradient.addColorStop(0, '#333');
-                gradient.addColorStop(0.5, '#000');
-                gradient.addColorStop(1, '#111');
-                
-                this.ctx.fillStyle = gradient;
-                this.ctx.beginPath();
-                this.ctx.arc(x, y, actualSize, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Highlight (shiny effect)
-                const highlightGradient = this.ctx.createRadialGradient(
-                    x - actualSize * 0.35, y - actualSize * 0.35, 0,
-                    x - actualSize * 0.35, y - actualSize * 0.35, actualSize * 0.4
-                );
-                highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
-                highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                
-                this.ctx.fillStyle = highlightGradient;
-                this.ctx.beginPath();
-                this.ctx.arc(x - actualSize * 0.35, y - actualSize * 0.35, actualSize * 0.4, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Fuse
-                const fuseLength = actualSize * 0.6;
-                const fuseAngle = -Math.PI / 2 + Math.sin(Date.now() / 100) * 0.2;
-                const fuseX = x + Math.cos(fuseAngle) * fuseLength;
-                const fuseY = y + Math.sin(fuseAngle) * fuseLength;
-                
-                // Fuse rope
-                this.ctx.strokeStyle = '#654321';
-                this.ctx.lineWidth = 4;
-                this.ctx.lineCap = 'round';
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y - actualSize);
-                this.ctx.quadraticCurveTo(
-                    x + Math.sin(Date.now() / 200) * 5, 
-                    y - actualSize - 5,
-                    fuseX, 
-                    fuseY
-                );
-                this.ctx.stroke();
-                
-                // Burning fuse effect
-                if (timePercent < 0.5 || bomb.fusePhase === 1) {
-                    const sparkSize = 3 + Math.random() * 3;
-                    
-                    // Spark glow
-                    this.ctx.shadowColor = '#FF6600';
-                    this.ctx.shadowBlur = 15;
-                    
-                    // Spark core
-                    const sparkGradient = this.ctx.createRadialGradient(fuseX, fuseY, 0, fuseX, fuseY, sparkSize);
-                    sparkGradient.addColorStop(0, '#FFFF00');
-                    sparkGradient.addColorStop(0.3, '#FF6600');
-                    sparkGradient.addColorStop(1, '#FF0000');
-                    
-                    this.ctx.fillStyle = sparkGradient;
-                    this.ctx.beginPath();
-                    this.ctx.arc(fuseX, fuseY, sparkSize, 0, Math.PI * 2);
-                    this.ctx.fill();
-                    
-                    // Spark particles
-                    for (let i = 0; i < 3; i++) {
-                        const particleAngle = Math.random() * Math.PI * 2;
-                        const particleDist = Math.random() * 8;
-                        const px = fuseX + Math.cos(particleAngle) * particleDist;
-                        const py = fuseY + Math.sin(particleAngle) * particleDist;
-                        
-                        this.ctx.fillStyle = `rgba(255, ${100 + Math.random() * 155}, 0, ${Math.random()})`;
-                        this.ctx.beginPath();
-                        this.ctx.arc(px, py, 1 + Math.random() * 2, 0, Math.PI * 2);
-                        this.ctx.fill();
+            drawEnemies() {
+                this.enemies.forEach((enemy, index) => {
+                    if (enemy.alive) {
+                        this.drawCharacter(enemy, CONFIG.AI_COLORS[index % CONFIG.AI_COLORS.length]);
                     }
-                }
+                });
+            }
+
+            drawCharacter(char, color) {
+                const ts = CONFIG.TILE_SIZE;
+                const size = ts * 0.6;
                 
-                this.ctx.shadowBlur = 0;
+                this.ctx.fillStyle = color;
+                this.ctx.beginPath();
+                this.ctx.arc(char.x, char.y, size / 2, 0, Math.PI * 2);
+                this.ctx.fill();
                 
-                // Timer text (countdown)
-                if (!bomb.remote) {
-                    const timeLeft = Math.ceil(bomb.timer / 1000);
+                this.ctx.fillStyle = '#fff';
+                this.ctx.beginPath();
+                this.ctx.arc(char.x - size / 6, char.y - size / 6, size / 8, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.beginPath();
+                this.ctx.arc(char.x + size / 6, char.y - size / 6, size / 8, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+
+            drawBombs() {
+                this.bombs.forEach(bomb => {
+                    const ts = CONFIG.TILE_SIZE;
+                    const size = ts * 0.4;
                     
-                    // Timer background
-                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                    this.ctx.fillStyle = '#000';
                     this.ctx.beginPath();
-                    this.ctx.arc(x, y, 10, 0, Math.PI * 2);
+                    this.ctx.arc(bomb.x, bomb.y, size, 0, Math.PI * 2);
                     this.ctx.fill();
                     
-                    // Timer text
-                    this.ctx.fillStyle = timeLeft <= 1 ? '#FF0000' : '#FFFFFF';
-                    this.ctx.font = 'bold 14px Arial';
-                    this.ctx.textAlign = 'center';
-                    this.ctx.textBaseline = 'middle';
-                    this.ctx.fillText(timeLeft, x, y);
-                } else {
-                    // Remote bomb indicator
-                    this.ctx.fillStyle = '#00FFFF';
+                    this.ctx.fillStyle = '#fff';
+                    const timeLeft = Math.ceil(bomb.timer / 1000);
                     this.ctx.font = 'bold 16px Arial';
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
-                    this.ctx.fillText('R', x, y);
-                }
-                
-                // Danger warning when about to explode
-                if (timePercent < 0.3) {
-                    const warningAlpha = Math.sin(Date.now() / 100) * 0.3 + 0.4;
-                    this.ctx.strokeStyle = `rgba(255, 0, 0, ${warningAlpha})`;
-                    this.ctx.lineWidth = 3;
-                    this.ctx.beginPath();
-                    this.ctx.arc(x, y, actualSize + 5, 0, Math.PI * 2);
-                    this.ctx.stroke();
-                }
-                
-                this.ctx.restore();
-            }
-
-            drawExplosion(exp) {
-                const ts = CONFIG.TILE_SIZE;
-                const x = exp.x;
-                const y = exp.y;
-                const alpha = exp.timer / 500;
-                const scale = 1 - (exp.timer / 500) * 0.3;
-                
-                this.ctx.save();
-                
-                // Shockwave ring
-                const ringRadius = (1 - alpha) * ts * 1.5;
-                const ringGradient = this.ctx.createRadialGradient(x, y, ringRadius - 5, x, y, ringRadius);
-                ringGradient.addColorStop(0, `rgba(255, 255, 200, ${alpha * 0.5})`);
-                ringGradient.addColorStop(1, `rgba(255, 100, 0, 0)`);
-                
-                this.ctx.fillStyle = ringGradient;
-                this.ctx.beginPath();
-                this.ctx.arc(x, y, ringRadius, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Main explosion fireball
-                const fireGradient = this.ctx.createRadialGradient(x, y, 0, x, y, ts * 0.6 * scale);
-                fireGradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-                fireGradient.addColorStop(0.2, `rgba(255, 255, 100, ${alpha})`);
-                fireGradient.addColorStop(0.5, `rgba(255, 150, 0, ${alpha * 0.8})`);
-                fireGradient.addColorStop(0.8, `rgba(255, 50, 0, ${alpha * 0.5})`);
-                fireGradient.addColorStop(1, `rgba(100, 0, 0, 0)`);
-                
-                this.ctx.fillStyle = fireGradient;
-                this.ctx.beginPath();
-                this.ctx.arc(x, y, ts * 0.6 * scale, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Fire particles with trails
-                exp.particles.forEach(p => {
-                    if (p.life <= 0) return;
-                    
-                    const px = x + p.x;
-                    const py = y + p.y;
-                    const particleSize = 4 * p.life * scale;
-                    
-                    // Particle glow
-                    this.ctx.shadowColor = p.life > 0.5 ? '#FFFF00' : '#FF6600';
-                    this.ctx.shadowBlur = 10 * p.life;
-                    
-                    // Particle gradient
-                    const pGradient = this.ctx.createRadialGradient(px, py, 0, px, py, particleSize);
-                    if (p.life > 0.7) {
-                        pGradient.addColorStop(0, `rgba(255, 255, 255, ${p.life})`);
-                        pGradient.addColorStop(0.5, `rgba(255, 255, 100, ${p.life})`);
-                        pGradient.addColorStop(1, `rgba(255, 150, 0, 0)`);
-                    } else if (p.life > 0.4) {
-                        pGradient.addColorStop(0, `rgba(255, 255, 100, ${p.life})`);
-                        pGradient.addColorStop(0.5, `rgba(255, 100, 0, ${p.life})`);
-                        pGradient.addColorStop(1, `rgba(255, 0, 0, 0)`);
-                    } else {
-                        pGradient.addColorStop(0, `rgba(255, 100, 0, ${p.life})`);
-                        pGradient.addColorStop(0.5, `rgba(150, 0, 0, ${p.life})`);
-                        pGradient.addColorStop(1, `rgba(50, 0, 0, 0)`);
-                    }
-                    
-                    this.ctx.fillStyle = pGradient;
-                    this.ctx.beginPath();
-                    this.ctx.arc(px, py, particleSize, 0, Math.PI * 2);
-                    this.ctx.fill();
-                    
-                    // Particle trail
-                    this.ctx.strokeStyle = `rgba(255, ${50 + p.life * 155}, 0, ${p.life * 0.3})`;
-                    this.ctx.lineWidth = 2 * p.life;
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(px, py);
-                    this.ctx.lineTo(px - p.vx * 2, py - p.vy * 2);
-                    this.ctx.stroke();
+                    this.ctx.fillText(timeLeft, bomb.x, bomb.y);
                 });
-                
-                this.ctx.shadowBlur = 0;
-                
-                // Cross-shaped fire rays
-                const rayLength = ts * 0.4 * alpha;
-                const rayWidth = ts * 0.3 * alpha;
-                
-                // Horizontal ray
-                const hGradient = this.ctx.createLinearGradient(x - rayLength, y, x + rayLength, y);
-                hGradient.addColorStop(0, 'rgba(255, 100, 0, 0)');
-                hGradient.addColorStop(0.5, `rgba(255, 200, 0, ${alpha})`);
-                hGradient.addColorStop(1, 'rgba(255, 100, 0, 0)');
-                this.ctx.fillStyle = hGradient;
-                this.ctx.fillRect(x - rayLength, y - rayWidth/2, rayLength * 2, rayWidth);
-                
-                // Vertical ray
-                const vGradient = this.ctx.createLinearGradient(x, y - rayLength, x, y + rayLength);
-                vGradient.addColorStop(0, 'rgba(255, 100, 0, 0)');
-                vGradient.addColorStop(0.5, `rgba(255, 200, 0, ${alpha})`);
-                vGradient.addColorStop(1, 'rgba(255, 100, 0, 0)');
-                this.ctx.fillStyle = vGradient;
-                this.ctx.fillRect(x - rayWidth/2, y - rayLength, rayWidth, rayLength * 2);
-                
-                // Smoke puffs at the end
-                if (alpha < 0.5) {
-                    const smokeAlpha = (0.5 - alpha) * 2;
-                    const smokeSize = ts * 0.5 * (1 - smokeAlpha);
-                    
-                    this.ctx.fillStyle = `rgba(50, 50, 50, ${smokeAlpha * 0.5})`;
-                    this.ctx.beginPath();
-                    this.ctx.arc(x, y - 5, smokeSize, 0, Math.PI * 2);
-                    this.ctx.fill();
-                }
-                
-                this.ctx.restore();
             }
 
-            drawPowerUp(powerup) {
-                const ts = CONFIG.TILE_SIZE;
-                const x = powerup.x;
-                const y = powerup.y + powerup.bobOffset;
-                const boxSize = ts * 0.7;
-                
-                this.ctx.save();
-                
-                // Glow pulse effect
-                const glowPulse = Math.sin(Date.now() / 200) * 0.3 + 0.7;
-                this.ctx.shadowColor = '#FFD700';
-                this.ctx.shadowBlur = 15 * glowPulse;
-                
-                // Sparkle particles around powerup
-                for (let i = 0; i < 6; i++) {
-                    const angle = (Date.now() / 1000 + i / 6) * Math.PI * 2;
-                    const dist = 15 + Math.sin(Date.now() / 300) * 3;
-                    const sparkX = x + Math.cos(angle) * dist;
-                    const sparkY = y + Math.sin(angle) * dist;
-                    const sparkSize = 2 + Math.sin(Date.now() / 200 + i) * 1;
+            drawExplosions() {
+                this.explosions.forEach(exp => {
+                    const alpha = exp.timer / 500;
+                    const ts = CONFIG.TILE_SIZE;
                     
-                    this.ctx.fillStyle = `rgba(255, 255, 200, ${glowPulse})`;
+                    const gradient = this.ctx.createRadialGradient(exp.x, exp.y, 0, exp.x, exp.y, ts / 2);
+                    gradient.addColorStop(0, `rgba(255, 255, 100, ${alpha})`);
+                    gradient.addColorStop(0.5, `rgba(255, 100, 0, ${alpha})`);
+                    gradient.addColorStop(1, `rgba(255, 0, 0, 0)`);
+                    
+                    this.ctx.fillStyle = gradient;
                     this.ctx.beginPath();
-                    this.ctx.arc(sparkX, sparkY, sparkSize, 0, Math.PI * 2);
+                    this.ctx.arc(exp.x, exp.y, ts / 2, 0, Math.PI * 2);
                     this.ctx.fill();
-                }
-                
-                // 3D Box base
-                this.ctx.shadowBlur = 0;
-                
-                // Box shadow
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                this.ctx.fillRect(x - boxSize/2 + 3, y - boxSize/2 + 3, boxSize, boxSize);
-                
-                // Box back face (dark)
-                this.ctx.fillStyle = '#B8860B';
-                this.ctx.fillRect(x - boxSize/2 + 4, y - boxSize/2 + 4, boxSize, boxSize);
-                
-                // Box main face (gradient)
-                const boxGradient = this.ctx.createLinearGradient(
-                    x - boxSize/2, y - boxSize/2,
-                    x + boxSize/2, y + boxSize/2
-                );
-                boxGradient.addColorStop(0, '#FFE87C');
-                boxGradient.addColorStop(0.5, '#FFD700');
-                boxGradient.addColorStop(1, '#FFA500');
-                
-                this.ctx.fillStyle = boxGradient;
-                this.ctx.fillRect(x - boxSize/2, y - boxSize/2, boxSize, boxSize);
-                
-                // Box edges (3D effect)
-                this.ctx.strokeStyle = '#B8860B';
-                this.ctx.lineWidth = 2;
-                this.ctx.strokeRect(x - boxSize/2, y - boxSize/2, boxSize, boxSize);
-                
-                // Box highlight
-                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                this.ctx.fillRect(x - boxSize/2, y - boxSize/2, boxSize, boxSize * 0.3);
-                
-                // Box inner border
-                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-                this.ctx.lineWidth = 1;
-                this.ctx.strokeRect(x - boxSize/2 + 2, y - boxSize/2 + 2, boxSize - 4, boxSize - 4);
-                
-                // Question mark pattern for mystery
-                if (powerup.type === 'MYSTERY') {
-                    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
-                    const colorIndex = Math.floor(Date.now() / 200) % colors.length;
-                    this.ctx.fillStyle = colors[colorIndex];
-                    this.ctx.font = 'bold 24px Arial';
+                });
+            }
+
+            drawPowerups() {
+                this.powerups.forEach(powerup => {
+                    const ts = CONFIG.TILE_SIZE;
+                    const x = powerup.x;
+                    const y = powerup.y + powerup.bobOffset;
+                    
+                    this.ctx.shadowColor = '#FFD700';
+                    this.ctx.shadowBlur = 10;
+                    
+                    this.ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+                    this.ctx.fillRect(x - ts * 0.3, y - ts * 0.3, ts * 0.6, ts * 0.6);
+                    
+                    this.ctx.strokeStyle = '#FFD700';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.strokeRect(x - ts * 0.3, y - ts * 0.3, ts * 0.6, ts * 0.6);
+                    
+                    this.ctx.shadowBlur = 0;
+                    this.ctx.font = `${ts * 0.5}px Arial`;
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
-                    this.ctx.fillText('?', x, y);
-                } else {
-                    // Draw powerup icon/emoji
-                    this.ctx.font = `${boxSize * 0.6}px Arial`;
-                    this.ctx.textAlign = 'center';
-                    this.ctx.textBaseline = 'middle';
-                    
-                    // Icon shadow
-                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                    this.ctx.fillText(POWERUP_TYPES[powerup.type].emoji, x + 1, y + 1);
-                    
-                    // Icon
-                    this.ctx.fillStyle = '#000';
-                    this.ctx.fillText(POWERUP_TYPES[powerup.type].emoji, x, y);
-                }
-                
-                // Rotating outline
-                const rotationAngle = (Date.now() / 1000) * 2;
-                this.ctx.strokeStyle = `rgba(255, 215, 0, ${glowPulse})`;
-                this.ctx.lineWidth = 2;
-                this.ctx.setLineDash([5, 5]);
-                this.ctx.lineDashOffset = -Date.now() / 50;
-                
-                this.ctx.save();
-                this.ctx.translate(x, y);
-                this.ctx.rotate(rotationAngle);
-                this.ctx.strokeRect(-boxSize/2 - 3, -boxSize/2 - 3, boxSize + 6, boxSize + 6);
-                this.ctx.restore();
-                
-                this.ctx.setLineDash([]);
-                
-                // Powerup name label (on hover effect - always show)
-                const name = POWERUP_TYPES[powerup.type].name;
-                this.ctx.font = '9px Arial';
-                this.ctx.textAlign = 'center';
-                
-                const labelY = y + boxSize/2 + 12;
-                const labelWidth = this.ctx.measureText(name).width + 6;
-                
-                // Label background
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-                this.ctx.fillRect(x - labelWidth/2, labelY - 8, labelWidth, 12);
-                
-                // Label text
-                this.ctx.fillStyle = '#FFD700';
-                this.ctx.fillText(name, x, labelY - 2);
-                
-                this.ctx.restore();
-            }
-
-            drawUI() {
-                const hudDiv = document.getElementById('gameUI');
-                hudDiv.innerHTML = '';
-                
-                this.players.forEach(player => {
-                    const hud = document.createElement('div');
-                    hud.className = 'player-hud';
-                    hud.style.opacity = player.alive ? '1' : '0.5';
-                    
-                    hud.innerHTML = `
-                        <div class="avatar">${CONFIG.PLAYER_EMOJIS[player.skin]}</div>
-                        <div class="player-stats">
-                            <div style="font-weight: bold;">${player.name}</div>
-                            <div class="stat-bar">
-                                ❤️ ${player.lives} | 💣 ${player.bombCount} | 🔥 ${player.fireRange} | ⭐ ${player.score}
-                            </div>
-                        </div>
-                    `;
-                    
-                    hudDiv.appendChild(hud);
+                    this.ctx.fillText(POWERUPS[powerup.type].emoji, x, y);
                 });
-                
-                // Timer
-                const minutes = Math.floor(this.gameTime / 60000);
-                const seconds = Math.floor((this.gameTime % 60000) / 1000);
-                const timerDiv = document.createElement('div');
-                timerDiv.style.fontSize = '24px';
-                timerDiv.style.fontWeight = 'bold';
-                timerDiv.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                hudDiv.appendChild(timerDiv);
-                
-                // Active powerups indicator
-                const mainPlayer = this.players[0];
-                if (mainPlayer && mainPlayer.alive) {
-                    const powerupDiv = document.getElementById('powerupIndicator');
-                    powerupDiv.innerHTML = '';
-                    
-                    mainPlayer.powerups.forEach(effectName => {
-                        const powerup = Object.values(POWERUP_TYPES).find(p => p.effect === effectName);
-                        if (powerup) {
-                            const icon = document.createElement('div');
-                            icon.className = 'powerup-icon';
-                            icon.textContent = powerup.emoji;
-                            icon.title = powerup.name;
-                            powerupDiv.appendChild(icon);
-                        }
-                    });
-                }
             }
 
             startCountdown() {
@@ -1975,59 +1275,6 @@
                 }, 3000);
             }
 
-            endGame() {
-                this.running = false;
-                
-                // Award survival bonus
-                this.players.forEach(player => {
-                    if (player.alive) {
-                        player.score += 300;
-                    }
-                });
-                
-                // Sort by score
-                const rankings = [...this.players].sort((a, b) => b.score - a.score);
-                
-                // Show game over screen
-                showScreen('gameOver');
-                
-                const leaderboard = document.getElementById('leaderboard');
-                leaderboard.innerHTML = '<h2>🏆 Bảng Xếp Hạng 🏆</h2>';
-                
-                rankings.forEach((player, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'leaderboard-item' + (index === 0 ? ' winner' : '');
-                    item.innerHTML = `
-                        <span>${index + 1}. ${CONFIG.PLAYER_EMOJIS[player.skin]} ${player.name}</span>
-                        <span>Score: ${player.score} | Kills: ${player.kills} | Deaths: ${player.deaths}</span>
-                    `;
-                    leaderboard.appendChild(item);
-                });
-                
-                // Save to localStorage
-                this.saveLeaderboard(rankings);
-            }
-
-            saveLeaderboard(rankings) {
-                const saved = JSON.parse(localStorage.getItem('bombermanScores') || '[]');
-                
-                rankings.forEach(player => {
-                    saved.push({
-                        name: player.name,
-                        score: player.score,
-                        kills: player.kills,
-                        deaths: player.deaths,
-                        date: new Date().toISOString()
-                    });
-                });
-                
-                // Keep top 50
-                saved.sort((a, b) => b.score - a.score);
-                saved.splice(50);
-                
-                localStorage.setItem('bombermanScores', JSON.stringify(saved));
-            }
-
             gameLoop() {
                 const currentTime = performance.now();
                 const deltaTime = currentTime - this.lastTime;
@@ -2044,221 +1291,46 @@
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
-            currentScreen = screenId;
-        }
-
-        function joinGame() {
-            // Get player config
-            playerConfig.name = document.getElementById('playerName').value.trim() || 'Player';
-            playerConfig.mapSize = parseInt(document.getElementById('mapSize').value);
-            
-            if (playerConfig.name.length === 0) {
-                playerConfig.name = 'Player';
-            }
-            
-            // Generate unique ID
-            myPlayerId = Date.now() + Math.random();
-            
-            // Join shared room
-            const room = getRoom();
-            
-            // Check if room is full
-            if (room.players.length >= 4) {
-                alert('Phòng đã đầy! (4/4 người chơi)');
-                return;
-            }
-            
-            // Add self to room
-            room.players.push({
-                id: myPlayerId,
-                name: playerConfig.name,
-                skin: playerConfig.skin,
-                timestamp: Date.now()
-            });
-            
-            saveRoom(room);
-            
-            // Show lobby
-            showScreen('lobby');
-            updateLobby();
-            
-            // Start checking for updates
-            startLobbyCheck();
-        }
-
-        function getRoom() {
-            try {
-                const roomData = localStorage.getItem(SHARED_ROOM_KEY);
-                if (roomData) {
-                    const room = JSON.parse(roomData);
-                    // Clean up old players (timeout after 30 seconds)
-                    const now = Date.now();
-                    room.players = room.players.filter(p => now - p.timestamp < 30000);
-                    return room;
-                }
-            } catch (e) {
-                console.error('Error loading room:', e);
-            }
-            
-            return {
-                players: [],
-                mapSize: playerConfig.mapSize,
-                gameStarted: false
-            };
-        }
-
-        function saveRoom(room) {
-            try {
-                localStorage.setItem(SHARED_ROOM_KEY, JSON.stringify(room));
-            } catch (e) {
-                console.error('Error saving room:', e);
-            }
-        }
-
-        function startLobbyCheck() {
-            // Update room presence
-            lobbyCheckInterval = setInterval(() => {
-                if (currentScreen !== 'lobby') {
-                    stopLobbyCheck();
-                    return;
-                }
-                
-                const room = getRoom();
-                
-                // Update my timestamp
-                const me = room.players.find(p => p.id === myPlayerId);
-                if (me) {
-                    me.timestamp = Date.now();
-                    saveRoom(room);
-                }
-                
-                updateLobby();
-                
-                // Auto-start if triggered
-                if (room.gameStarted && currentScreen === 'lobby') {
-                    actuallyStartGame();
-                }
-            }, 1000);
-        }
-
-        function stopLobbyCheck() {
-            if (lobbyCheckInterval) {
-                clearInterval(lobbyCheckInterval);
-                lobbyCheckInterval = null;
-            }
-        }
-
-        function updateLobby() {
-            const room = getRoom();
-            const list = document.getElementById('playerList');
-            list.innerHTML = '<h3>Người chơi trong phòng:</h3>';
-            
-            room.players.forEach((player, index) => {
-                const item = document.createElement('div');
-                item.className = 'player-item';
-                item.style.animation = 'fadeIn 0.3s ease-in';
-                item.innerHTML = `
-                    <div class="player-avatar">${CONFIG.PLAYER_EMOJIS[player.skin]}</div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: bold;">${player.name}</div>
-                        <div style="font-size: 12px; color: #aaa;">Player ${index + 1}</div>
-                    </div>
-                    ${player.id === myPlayerId ? '<div style="color: #00ff00;">👤 You</div>' : ''}
-                `;
-                list.appendChild(item);
-            });
-            
-            // Update start button
-            const startBtn = document.getElementById('startBtn');
-            if (room.players.length >= 2 && room.players.length <= 4) {
-                startBtn.disabled = false;
-                startBtn.textContent = `Bắt Đầu (${room.players.length}/4 người chơi)`;
-            } else if (room.players.length === 1) {
-                startBtn.disabled = true;
-                startBtn.textContent = 'Đang chờ thêm người chơi...';
-            }
         }
 
         function startGame() {
-            const room = getRoom();
+            currentLevel = 1;
+            playerLives = 3;
+            playerScore = 0;
             
-            if (room.players.length < 2) {
-                alert('Cần ít nhất 2 người chơi!');
-                return;
-            }
-            
-            // Mark game as started
-            room.gameStarted = true;
-            saveRoom(room);
-            
-            // Start game immediately
-            actuallyStartGame();
-        }
-
-        function actuallyStartGame() {
-            stopLobbyCheck();
-            
-            const room = getRoom();
-            
-            // Create players from room
-            const players = room.players.map((p, index) => {
-                const player = new Player(p.id, p.name, p.skin, 0, 0);
-                return player;
-            });
-            
-            // Start game
             showScreen('gameContainer');
-            gameInstance = new Game(room.mapSize, players);
+            gameInstance = new Game(currentLevel);
             gameInstance.startCountdown();
             gameInstance.gameLoop();
         }
 
-        function playAgain() {
-            // Clear room
-            const room = {
-                players: [],
-                mapSize: playerConfig.mapSize,
-                gameStarted: false
-            };
-            saveRoom(room);
+        function nextLevel() {
+            currentLevel++;
             
-            gameInstance = null;
-            backToMenu();
+            showScreen('gameContainer');
+            gameInstance = new Game(currentLevel);
+            gameInstance.startCountdown();
+            gameInstance.gameLoop();
+        }
+
+        function restartGame() {
+            startGame();
         }
 
         function backToMenu() {
-            stopLobbyCheck();
-            
-            // Remove self from room
-            if (myPlayerId) {
-                const room = getRoom();
-                room.players = room.players.filter(p => p.id !== myPlayerId);
-                room.gameStarted = false;
-                saveRoom(room);
-            }
-            
             gameInstance = null;
-            myPlayerId = null;
+            document.getElementById('highScoreDisplay').textContent = highScore;
             showScreen('menu');
         }
 
-        // ===== SKIN SELECTOR =====
-        document.querySelectorAll('.skin-option').forEach((option, index) => {
-            option.addEventListener('click', () => {
-                document.querySelectorAll('.skin-option').forEach(o => o.classList.remove('selected'));
-                option.classList.add('selected');
-                playerConfig.skin = index;
-            });
-        });
-
         // ===== INITIALIZE =====
         window.addEventListener('load', () => {
-            console.log('🎮 Bomberman Online loaded!');
-            console.log('Controls:');
-            console.log('Player 1: Arrow Keys + Space');
-            console.log('Player 2: WASD + Q');
-            console.log('Player 3: IJKL + U');
-            console.log('Player 4: TFGH + R');
+            console.log('🎮 Bomberman Endless Mode loaded!');
+            console.log('Controls: Arrow Keys + Space');
+            
+            // Load and display high score
+            highScore = parseInt(localStorage.getItem('bomberman_highscore')) || 0;
+            document.getElementById('highScoreDisplay').textContent = highScore;
         });
     </script>
 </body>
